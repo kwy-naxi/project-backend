@@ -11,8 +11,8 @@ export class CoreEntity {
   id: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  create_date: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  update_date: Date;
 }
