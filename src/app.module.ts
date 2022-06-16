@@ -15,6 +15,9 @@ import { SeriesModule } from './series/series.module';
 import { Series } from './series/entities/series.entity';
 import { Episode } from './series/entities/episode.entity';
 import { Testtable } from './series/entities/testtable.entity';
+import { ContentsModule } from './contents/contents.module';
+import { ContentsPriceItemManage } from './contents/entities/contents_price_item_manage.entities';
+import { ContentsCart } from './contents/entities/contents_cart.entity';
 
 @Module({
   imports: [
@@ -42,7 +45,7 @@ import { Testtable } from './series/entities/testtable.entity';
       database: process.env.DB_NAME1,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: process.env.NODE_ENV !== 'prod',
-      entities: [User, Series, Episode],
+      entities: [User, Series, Episode, ContentsPriceItemManage, ContentsCart],
     }),
     TypeOrmModule.forRoot({
       name: 'dbtest',
@@ -61,6 +64,7 @@ import { Testtable } from './series/entities/testtable.entity';
     }),
     UsersModule,
     SeriesModule,
+    ContentsModule,
   ],
   controllers: [],
   providers: [],

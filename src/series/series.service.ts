@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {
-  InjectConnection,
-  InjectEntityManager,
-  InjectRepository,
-} from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
-import { SeriesInfoOutput, SeriesInfoInput } from './dto/series-info.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { SeriesInfoOutput } from './dto/series-info.dto';
 import { Episode } from './entities/episode.entity';
 import { Series } from './entities/series.entity';
 import { Testtable } from './entities/testtable.entity';
@@ -21,28 +17,41 @@ export class SeriesService {
     private readonly testtable: Repository<Testtable>,
   ) {}
 
+  //Test Data
   async testDB({ id }: Testtable) {
     const testdb = await this.testtable.findOneBy({ id });
     console.log('------test-------');
     console.log(testdb);
   }
+  async seriesPut({ name }: Series) {
+    const query = await this.series.save(this.series.create({ name }));
+    console.log(query);
+  }
+  async episodePut({ seriesId, name }: Episode) {
+    const query = await this.episode.save(
+      this.episode.create({ seriesId, name }),
+    );
+    console.log(query);
+  }
 
-  async seriesEpisode({ id }: Series): Promise<SeriesInfoOutput> {
-    //const series = await this.series.findOne;
-    const seriesOne = await this.series.findOneBy({ id });
-    if (!seriesOne) {
+  //--------------------------------------------------------------------
+
+  /**
+   * 레거시 DB에서 series 정보 조회
+   */
+  async seriesOne({ id }: Series): Promise<SeriesInfoOutput> {
+    const seriesInfo = await this.series.findOneBy({ id });
+    if (!seriesInfo) {
       console.log('seriesOne data not found');
     }
-    const query = await this.episode.find();
+    const query = await this.episode.find({
+      where: {
+        seriesId: seriesInfo.id,
+      },
+    });
     console.log(query);
-    // const query = await this.episode.find({
-    //   where: {
-    //     series,
-    //   },
-    // });
     return {
       ok: true,
-      //episode: query,
     };
   }
 }
