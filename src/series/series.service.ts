@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SeriesInfoOutput } from './dto/series-info.dto';
 import { Episode } from './entities/episode.entity';
